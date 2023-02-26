@@ -1,0 +1,64 @@
+﻿@model IEnumerable<BlogWebSite.Models.Post>
+
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+<h1>Economy Blog</h1>
+
+<p>
+    <a asp-action="Create">Ajouter un Post</a>
+</p>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                Utilisateur
+            </th>
+            <th>
+                Post
+            </th>
+            <th>
+                Date de publication
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model) {
+    if (!item.IsComment){
+    <tr>
+            <td>
+                        <img src="images/@Html.DisplayFor(modelItem => item.user.ImageUser)" style="width:35px;height:35px" />
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Content)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Date)
+            </td>
+            <td>
+                 @Html.ActionLink("Editer", "Edit", new { /* id=item.PrimaryKey */ }) |
+                 @Html.ActionLink("Supprimer", "Delete", new { /* id=item.PrimaryKey */ }) |
+                 @Html.ActionLink("Commenter", "Comment", new { /* id=item.PrimaryKey */ })
+            </td>
+        </tr>
+            <tr>
+                <td>Comments</td>
+            </tr>
+                @foreach (var comment in Model)
+                {
+                    if (comment.IsComment && comment.Postref.PostId == item.PostId){
+                        <tr>
+                            <td>
+                            <td>
+                            @Html.DisplayFor(modelItem => comment.Content)
+                            <td/>
+                        </tr>
+                    }
+            }
+        }
+}
+    </tbody>
+</table>
